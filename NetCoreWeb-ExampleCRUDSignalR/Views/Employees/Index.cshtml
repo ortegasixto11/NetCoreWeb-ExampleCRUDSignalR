@@ -1,0 +1,40 @@
+﻿@model IEnumerable<NetCoreWeb_ExampleCRUDSignalR.Models.Employee>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<div id="tableEmployees">
+    @await Html.PartialAsync("../Shared/_GetAllEmployees.cshtml", Model)
+</div>
+
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    "use strict";
+
+    var connection = new signalR.HubConnectionBuilder().withUrl("/notify").build();
+
+    connection.on("BroadcastMessage", function () {
+        getAll()
+    });
+
+    connection.start().then(function () {
+    }).catch(function (err) {
+        return console.error(err.toString());
+    });
+
+    function getAll() {
+        var model = $('#tableEmployees');
+        $.get("/Employees/GetAll", function (result) {
+            model.empty().append(result);
+        })
+    }
+
+</script>
