@@ -25,13 +25,13 @@ namespace NetCoreWeb_ExampleCRUDSignalR.Controllers
 
         public async Task<IActionResult> GetAll()
         {
-            return PartialView("_GetAllEmployees", await _context.Employees.ToListAsync());
+            return PartialView("_GetAllEmployees", await GetEmployeesAsync());
         }
 
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Employees.ToListAsync());
+            return View(await GetEmployeesAsync());
         }
 
         // GET: Employees/Details/5
@@ -128,6 +128,11 @@ namespace NetCoreWeb_ExampleCRUDSignalR.Controllers
         private bool EmployeeExists(Guid id)
         {
             return _context.Employees.Any(e => e.Id == id);
+        }
+
+        private async Task<IEnumerable<Employee>> GetEmployeesAsync()
+        {
+            return await _context.Employees.OrderBy(x => x.FirstName).ToListAsync();
         }
     }
 }

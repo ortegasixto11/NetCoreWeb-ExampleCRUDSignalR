@@ -29,8 +29,9 @@ namespace NetCoreWeb_ExampleCRUDSignalR
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                //options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreSQL"))
+            );
 
             services.AddSignalR();
 
