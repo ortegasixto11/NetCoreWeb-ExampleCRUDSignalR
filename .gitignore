@@ -6,3 +6,7 @@ NetCoreWeb-ExampleCRUDSignalR/bin/
 NetCoreWeb-ExampleCRUDSignalR/obj/
 
 NetCoreWeb-ExampleCRUDSignalR/.config/
+
+EmailSender/bin/
+
+EmailSender/obj/
