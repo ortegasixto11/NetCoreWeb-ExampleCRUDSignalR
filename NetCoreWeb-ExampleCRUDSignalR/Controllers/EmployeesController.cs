@@ -64,7 +64,7 @@ namespace NetCoreWeb_ExampleCRUDSignalR.Controllers
                 await _hubContext.Clients.All.BroadcastMessage();
                 try
                 {
-                    var message = new EmailSender.Message(new string[] { "sixto_miguel@hotmail.com" }, "Test email", "This is the content from our email.");
+                    var message = new EmailSender.Message(new string[] { "Pedro.MartinezCastro@tds.fujitsu.com" }, "NetCore Application", $"The Employee ${employee.FirstName} was added.");
                     _emailSender.SendEmail(message);
                 }
                 catch (Exception ex)
