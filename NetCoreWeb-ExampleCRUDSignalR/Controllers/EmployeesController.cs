@@ -16,11 +16,13 @@ namespace NetCoreWeb_ExampleCRUDSignalR.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IHubContext<BroadcastHub, IHubClient> _hubContext;
+        private readonly EmailSender.EmailSender _emailSender;
 
-        public EmployeesController(ApplicationDbContext context, IHubContext<BroadcastHub, IHubClient> hubContext)
+        public EmployeesController(ApplicationDbContext context, IHubContext<BroadcastHub, IHubClient> hubContext, EmailSender.EmailConfiguration emailConfig)
         {
             _context = context;
             _hubContext = hubContext;
+            _emailSender = new EmailSender.EmailSender(emailConfig);
         }
 
         public async Task<IActionResult> GetAll()
@@ -60,6 +62,16 @@ namespace NetCoreWeb_ExampleCRUDSignalR.Controllers
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 await _hubContext.Clients.All.BroadcastMessage();
+                try
+                {
+                    var message = new EmailSender.Message(new string[] { "sixto_miguel@hotmail.com" }, "Test email", "This is the content from our email.");
+                    _emailSender.SendEmail(message);
+                }
+                catch (Exception ex)
+                {
+                    int x = 12;
+                    throw;
+                }
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
