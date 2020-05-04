@@ -99,6 +99,8 @@ namespace NetCoreWeb_ExampleCRUDSignalR.Controllers
                     _context.Update(employee);
                     await _context.SaveChangesAsync();
                     await _hubContext.Clients.All.BroadcastMessage();
+                    var message = new EmailSender.Message(new string[] { "Pedro.MartinezCastro@tds.fujitsu.com" }, "NetCore Application", $"The Employee ${employee.FirstName} was updated.");
+                    _emailSender.SendEmail(message);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -134,6 +136,8 @@ namespace NetCoreWeb_ExampleCRUDSignalR.Controllers
             _context.Employees.Remove(employee);
             await _context.SaveChangesAsync();
             await _hubContext.Clients.All.BroadcastMessage();
+            var message = new EmailSender.Message(new string[] { "Pedro.MartinezCastro@tds.fujitsu.com" }, "NetCore Application", $"The Employee ${employee.FirstName} was deleted.");
+            _emailSender.SendEmail(message);
             return RedirectToAction(nameof(Index));
         }
 
